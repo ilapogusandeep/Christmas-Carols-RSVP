@@ -162,36 +162,6 @@ def apply_christmas_theme():
         color: #1a1a1a !important;
     }
     
-    /* Mode toggle buttons */
-    .mode-toggle {
-        display: flex;
-        justify-content: center;
-        gap: 0.5rem;
-        margin-bottom: 0.3rem;
-    }
-    
-    .mode-btn {
-        padding: 0.4rem 1rem;
-        border-radius: 20px;
-        font-family: 'Mountains of Christmas', cursive;
-        font-size: 0.9rem;
-        font-weight: bold;
-        cursor: pointer;
-        border: 2px solid #1a472a;
-        transition: all 0.2s;
-    }
-    
-    .mode-btn-active {
-        background: #c41e3a;
-        color: white !important;
-        border-color: #c41e3a;
-    }
-    
-    .mode-btn-inactive {
-        background: white;
-        color: #1a472a !important;
-    }
-    
     /* Input fields */
     .stTextInput > div > div > input,
     .stNumberInput > div > div > input,
@@ -336,37 +306,37 @@ def render_guest_view(data):
     date_display = format_date_display(event.get('date', 'TBD'))
     time_display = format_time_display(event.get('time', 'TBD'))
     
-    # Event card
+    # Event card - NO EMOJIS
     st.markdown(f"""
     <div class="event-card">
         <h2 style="text-align: center; margin: 0 0 0.2rem 0;">{event.get('title', 'Christmas Carols')}</h2>
         <p style="text-align: center; font-size: 0.9rem; margin: 0 0 0.3rem 0;">{event.get('description', '')}</p>
         <div style="display: flex; justify-content: space-around; flex-wrap: wrap; font-size: 0.85rem;">
-            <span><strong>📅</strong> {date_display}</span>
-            <span><strong>🕐</strong> {time_display}</span>
-            <span><strong>📍</strong> {event.get('location', 'TBD')}</span>
+            <span><strong>Date:</strong> {date_display}</span>
+            <span><strong>Time:</strong> {time_display}</span>
+            <span><strong>Place:</strong> {event.get('location', 'TBD')}</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Host Instructions
+    # Host Instructions - NO EMOJIS
     host_instructions = event.get('host_instructions', '').strip()
     if host_instructions:
         st.markdown(f"""
         <div class="instructions-card">
-            <h3 style="margin: 0 0 0.2rem 0; font-size: 0.85rem;">📋 Info from Host</h3>
+            <h3 style="margin: 0 0 0.2rem 0; font-size: 0.85rem;">Info from Host:</h3>
             <div style="white-space: pre-line; font-size: 0.8rem;">{host_instructions}</div>
         </div>
         """, unsafe_allow_html=True)
     
-    # RSVP Form
-    st.markdown("#### 📝 RSVP")
+    # RSVP Form - NO EMOJIS
+    st.markdown("#### RSVP Here")
     
     with st.form("rsvp_form", clear_on_submit=True):
         name = st.text_input("Your Name", placeholder="Enter your name")
         num_guests = st.number_input("Number of Guests (including yourself)", min_value=1, max_value=20, value=1)
         
-        submitted = st.form_submit_button("🎄 Submit RSVP 🎄", use_container_width=True)
+        submitted = st.form_submit_button("* Submit RSVP *", use_container_width=True)
         
         if submitted:
             if not name.strip():
@@ -400,7 +370,7 @@ def render_host_view(data):
     
     # Check authentication
     if not st.session_state.get("host_authenticated", False):
-        st.markdown("#### 🔐 Enter Password")
+        st.markdown("#### Enter Password")
         password = st.text_input("Password", type="password", key="host_pwd")
         if st.button("Login"):
             if password == HOST_PASSWORD:
@@ -412,7 +382,7 @@ def render_host_view(data):
     
     # Share URLs
     urls = get_app_url()
-    with st.expander("🔗 Share URLs"):
+    with st.expander("Share URLs"):
         st.code(urls["local"])
         st.code(urls["network"])
     
@@ -429,7 +399,7 @@ def render_host_view(data):
     st.markdown("---")
     
     if responses:
-        st.markdown("### 📋 Guest List")
+        st.markdown("### Guest List")
         for i, r in enumerate(sorted(responses, key=lambda x: x.get("timestamp", ""), reverse=True)):
             with st.expander(f"{r['name']} - {r['num_guests']} guest(s)"):
                 st.write(f"RSVP: {r.get('timestamp', 'N/A')}")
@@ -441,13 +411,13 @@ def render_host_view(data):
         import pandas as pd
         df = pd.DataFrame([{"Name": r["name"], "Guests": r["num_guests"], "Date": r.get("timestamp", "")[:10]} for r in responses])
         st.dataframe(df, use_container_width=True, hide_index=True)
-        st.download_button("📥 Download CSV", df.to_csv(index=False), f"rsvps_{datetime.now().strftime('%Y%m%d')}.csv")
+        st.download_button("Download CSV", df.to_csv(index=False), f"rsvps_{datetime.now().strftime('%Y%m%d')}.csv")
     else:
         st.info("No RSVPs yet!")
     
     st.markdown("---")
     
-    with st.expander("⚙️ Edit Event"):
+    with st.expander("Edit Event"):
         event = data.get("event_details", {})
         with st.form("settings"):
             title = st.text_input("Title", event.get("title", ""))
@@ -478,7 +448,7 @@ def render_host_view(data):
                 st.success("Saved!")
                 st.rerun()
     
-    with st.expander("🗑️ Clear All"):
+    with st.expander("Clear All"):
         if st.button("Clear RSVPs"):
             data["responses"] = []
             save_data(data)
@@ -488,7 +458,7 @@ def render_host_view(data):
 def main():
     st.set_page_config(
         page_title="ICC Carols RSVP",
-        page_icon="🎄",
+        page_icon="*",
         layout="centered",
         initial_sidebar_state="collapsed"
     )
@@ -496,13 +466,13 @@ def main():
     apply_christmas_theme()
     data = load_data()
     
-    # MODE TOGGLE ON MAIN PAGE - VISIBLE!
-    st.markdown("##### Select Mode:")
-    mode = st.radio("", ["🎁 Guest RSVP", "🔐 Host Login"], horizontal=True, label_visibility="collapsed")
+    # MODE TOGGLE ON MAIN PAGE - NO EMOJIS
+    st.markdown("##### Select:")
+    mode = st.radio("", ["Guest RSVP", "Host Login"], horizontal=True, label_visibility="collapsed")
     
     st.markdown("---")
     
-    if mode == "🎁 Guest RSVP":
+    if mode == "Guest RSVP":
         render_guest_view(data)
     else:
         render_host_view(data)
