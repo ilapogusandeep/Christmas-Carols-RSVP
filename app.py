@@ -100,11 +100,13 @@ def apply_theme():
         100% { background-position: 150px 300px; }
     }
     
+    /* NO TOP PADDING */
     .main .block-container {
         background: rgba(255, 253, 250, 0.98);
         border-radius: 12px;
-        padding: 0.6rem !important;
-        margin: 0.3rem auto !important;
+        padding: 0.4rem 0.5rem !important;
+        padding-top: 0.2rem !important;
+        margin: 0.1rem auto !important;
         max-width: 100%;
         box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         border: 2px solid #c41e3a;
@@ -114,7 +116,7 @@ def apply_theme():
     
     @media (min-width: 768px) {
         .main .block-container {
-            padding: 1.2rem !important;
+            padding: 0.8rem 1rem !important;
             max-width: 600px;
         }
     }
@@ -123,19 +125,20 @@ def apply_theme():
         font-family: 'Mountains of Christmas', cursive !important;
         color: #c41e3a !important;
         text-align: center;
-        font-size: 1.4rem !important;
+        font-size: 1.3rem !important;
         margin: 0 !important;
-        line-height: 1.2 !important;
+        padding: 0 !important;
+        line-height: 1.1 !important;
     }
     
     h2, h3, h4, h5 {
         font-family: 'Mountains of Christmas', cursive !important;
         color: #1a472a !important;
-        margin: 0.3rem 0 !important;
+        margin: 0.2rem 0 !important;
     }
     
     /* ALL TEXT DARK */
-    p, li, label, span, div, strong, em, .stMarkdown {
+    p, li, label, span, div, strong, em, .stMarkdown, h5 {
         font-family: 'Crimson Pro', serif !important;
         color: #222222 !important;
     }
@@ -155,16 +158,16 @@ def apply_theme():
         background: #ffffff !important;
     }
     
-    /* Radio */
+    /* Radio - bottom toggle */
     .stRadio > div {
-        background: #fffaf0;
-        padding: 0.4rem;
+        background: #1a472a;
+        padding: 0.3rem 0.5rem;
         border-radius: 8px;
         border: 1px solid #d4af37;
     }
     
-    .stRadio label, .stRadio span {
-        color: #222222 !important;
+    .stRadio label, .stRadio span, .stRadio p {
+        color: #ffffff !important;
         font-weight: 600 !important;
     }
     
@@ -186,8 +189,8 @@ def apply_theme():
         background: linear-gradient(135deg, #fffbf5 0%, #fff8ee 100%);
         border: 2px solid #d4af37;
         border-radius: 10px;
-        padding: 0.6rem;
-        margin: 0.4rem 0;
+        padding: 0.5rem;
+        margin: 0.3rem 0;
     }
     
     .event-card * { color: #222222 !important; }
@@ -197,7 +200,7 @@ def apply_theme():
         background: #f5f9ff;
         border: 1px solid #1a472a;
         border-radius: 8px;
-        padding: 0.5rem;
+        padding: 0.4rem;
         margin: 0.3rem 0;
     }
     
@@ -207,42 +210,39 @@ def apply_theme():
     .stats-card {
         background: linear-gradient(135deg, #1a472a 0%, #2d5016 100%);
         border-radius: 8px;
-        padding: 0.5rem;
+        padding: 0.4rem;
         margin: 0.2rem 0;
         text-align: center;
     }
     
-    .stats-card h4 { color: #ffd700 !important; font-size: 0.8rem !important; margin: 0 !important; }
-    .stats-card p { color: white !important; font-size: 1.3rem !important; font-weight: bold !important; margin: 0 !important; }
-    
-    /* Section box */
-    .section-box {
-        background: #fffef8;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 0.5rem;
-        margin: 0.4rem 0;
-    }
-    
-    .section-box * { color: #222222 !important; }
+    .stats-card h4 { color: #ffd700 !important; font-size: 0.75rem !important; margin: 0 !important; }
+    .stats-card p { color: white !important; font-size: 1.2rem !important; font-weight: bold !important; margin: 0 !important; }
     
     /* Guest row */
     .guest-row {
         background: #f9f9f9;
         border: 1px solid #ddd;
         border-radius: 6px;
-        padding: 0.4rem;
+        padding: 0.3rem;
         margin: 0.2rem 0;
     }
     
     .guest-row * { color: #222222 !important; }
     
-    hr { margin: 0.4rem 0 !important; border-color: #ddd !important; }
+    /* Bottom toggle */
+    .bottom-toggle {
+        background: #1a472a;
+        border-radius: 8px;
+        padding: 0.3rem;
+        margin-top: 0.5rem;
+        text-align: center;
+    }
     
-    .stSuccess, .stError, .stInfo { font-size: 0.9rem !important; }
+    .bottom-toggle * { color: #ffd700 !important; }
     
-    /* Hide expander icons that show as text */
-    .streamlit-expanderHeader svg { display: none !important; }
+    hr { margin: 0.3rem 0 !important; border-color: #ddd !important; }
+    
+    .stSuccess, .stError, .stInfo { font-size: 0.85rem !important; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -257,13 +257,13 @@ def render_guest_view(data):
     
     st.markdown(f"""
     <div class="event-card">
-        <h2 style="text-align: center; margin: 0 0 0.3rem 0; font-size: 1.1rem;">{event.get('title', 'Christmas Carols')}</h2>
-        <p style="text-align: center; font-size: 0.9rem; margin: 0 0 0.4rem 0;">{event.get('description', '')}</p>
-        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; font-size: 0.85rem;">
+        <h2 style="text-align: center; margin: 0 0 0.2rem 0; font-size: 1rem;">{event.get('title', 'Christmas Carols')}</h2>
+        <p style="text-align: center; font-size: 0.85rem; margin: 0 0 0.3rem 0;">{event.get('description', '')}</p>
+        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; font-size: 0.8rem;">
             <span><b>Date:</b> {date_disp}</span>
             <span><b>Time:</b> {time_disp}</span>
         </div>
-        <p style="text-align: center; font-size: 0.85rem; margin: 0.3rem 0 0 0;"><b>Place:</b> {event.get('location', 'TBD')}</p>
+        <p style="text-align: center; font-size: 0.8rem; margin: 0.2rem 0 0 0;"><b>Place:</b> {event.get('location', 'TBD')}</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -271,12 +271,12 @@ def render_guest_view(data):
     if instr:
         st.markdown(f"""
         <div class="info-card">
-            <h4 style="margin: 0 0 0.2rem 0;">Info from Host:</h4>
-            <div style="white-space: pre-line; font-size: 0.85rem;">{instr}</div>
+            <h4 style="margin: 0 0 0.2rem 0; font-size: 0.85rem;">Info from Host:</h4>
+            <div style="white-space: pre-line; font-size: 0.8rem;">{instr}</div>
         </div>
         """, unsafe_allow_html=True)
     
-    st.markdown("#### RSVP Here")
+    st.markdown('<h4 style="color:#1a472a; margin: 0.3rem 0 0.2rem 0;">RSVP Here</h4>', unsafe_allow_html=True)
     
     with st.form("rsvp_form", clear_on_submit=True):
         name = st.text_input("Your Name", placeholder="Enter your name")
@@ -306,9 +306,8 @@ def render_guest_view(data):
 def render_host_view(data):
     st.title("Host Dashboard")
     
-    # Password check
     if not st.session_state.get("host_authenticated", False):
-        st.markdown('<h4 style="color: #222222 !important;">Enter Password</h4>', unsafe_allow_html=True)
+        st.markdown('<p style="color:#222222; font-weight:bold;">Enter Password:</p>', unsafe_allow_html=True)
         password = st.text_input("Password", type="password", key="host_pwd", label_visibility="collapsed")
         if st.button("Login"):
             if password == HOST_PASSWORD:
@@ -318,14 +317,12 @@ def render_host_view(data):
                 st.error("Wrong password!")
         return
     
-    # Show URL
     url = get_app_url()
-    st.markdown(f'<div class="info-card"><b>Share this link:</b><br><code style="color:#222;">{url}</code></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="info-card"><b>Share link:</b> <code style="color:#222;">{url}</code></div>', unsafe_allow_html=True)
     
     responses = data.get("responses", [])
     total = get_total_attendees(responses)
     
-    # Stats
     col1, col2 = st.columns(2)
     with col1:
         st.markdown(f'<div class="stats-card"><h4>Responses</h4><p>{len(responses)}</p></div>', unsafe_allow_html=True)
@@ -334,29 +331,21 @@ def render_host_view(data):
     
     st.markdown("---")
     
-    # Guest List - NO EXPANDERS
     if responses:
-        st.markdown("### Guest List")
-        for i, r in enumerate(sorted(responses, key=lambda x: x.get("timestamp", ""), reverse=True)):
-            st.markdown(f"""
-            <div class="guest-row">
-                <b>{r['name']}</b> - {r['num_guests']} guest(s)<br>
-                <small>RSVP: {r.get('timestamp', 'N/A')}</small>
-            </div>
-            """, unsafe_allow_html=True)
+        st.markdown('<h4 style="color:#1a472a;">Guest List</h4>', unsafe_allow_html=True)
+        for r in sorted(responses, key=lambda x: x.get("timestamp", ""), reverse=True):
+            st.markdown(f'<div class="guest-row"><b>{r["name"]}</b> - {r["num_guests"]} guest(s)</div>', unsafe_allow_html=True)
         
-        # Table
         import pandas as pd
         df = pd.DataFrame([{"Name": r["name"], "Guests": r["num_guests"]} for r in responses])
         st.dataframe(df, use_container_width=True, hide_index=True)
-        st.download_button("Download CSV", df.to_csv(index=False), f"rsvps.csv")
+        st.download_button("Download CSV", df.to_csv(index=False), "rsvps.csv")
     else:
         st.info("No RSVPs yet!")
     
     st.markdown("---")
     
-    # Edit Event - NO EXPANDER, use checkbox
-    if st.checkbox("Edit Event Details"):
+    if st.checkbox("Edit Event"):
         event = data.get("event_details", {})
         with st.form("settings"):
             title = st.text_input("Title", event.get("title", ""))
@@ -387,8 +376,7 @@ def render_host_view(data):
                 st.success("Saved!")
                 st.rerun()
     
-    # Clear - NO EXPANDER
-    if st.checkbox("Show Danger Zone"):
+    if st.checkbox("Danger Zone"):
         if st.button("Clear All RSVPs"):
             data["responses"] = []
             save_data(data)
@@ -402,15 +390,25 @@ def main():
     apply_theme()
     data = load_data()
     
-    st.markdown("##### Select:")
-    mode = st.radio("", ["Guest RSVP", "Host Login"], horizontal=True, label_visibility="collapsed")
+    # Check mode from session state
+    if "mode" not in st.session_state:
+        st.session_state.mode = "Guest RSVP"
     
-    st.markdown("---")
-    
-    if mode == "Guest RSVP":
+    # Show content FIRST
+    if st.session_state.mode == "Guest RSVP":
         render_guest_view(data)
     else:
         render_host_view(data)
+    
+    # Toggle at BOTTOM - dark background with gold text
+    st.markdown("---")
+    st.markdown('<div class="bottom-toggle"><b>Switch View:</b></div>', unsafe_allow_html=True)
+    mode = st.radio("", ["Guest RSVP", "Host Login"], horizontal=True, label_visibility="collapsed", 
+                    index=0 if st.session_state.mode == "Guest RSVP" else 1)
+    
+    if mode != st.session_state.mode:
+        st.session_state.mode = mode
+        st.rerun()
 
 
 if __name__ == "__main__":
