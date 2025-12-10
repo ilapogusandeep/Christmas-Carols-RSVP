@@ -73,7 +73,7 @@ def format_time(time_str):
 def apply_theme():
     st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Crimson+Pro:wght@400;600&family=Cormorant+Garamond:wght@600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Crimson+Pro:wght@400;600&family=EB+Garamond:wght@600;700&display=swap');
     
     #MainMenu, footer, header {visibility: hidden;}
     
@@ -265,7 +265,7 @@ def render_guest_view(data):
     
     st.markdown(f"""
     <div class="event-card">
-        <h2 style="text-align: center; margin: 0 0 0.3rem 0; font-size: 1.15rem; font-family: 'Cormorant Garamond', Georgia, serif; color: #1a472a !important; font-weight: 700; letter-spacing: 0.3px; line-height: 1.25;">{event.get('title', 'Christmas Carols')}</h2>
+        <h2 style="text-align: center; margin: 0 0 0.3rem 0; font-size: 1.15rem; font-family: 'EB Garamond', Georgia, serif; color: #1a472a !important; font-weight: 600; letter-spacing: 0.2px; line-height: 1.25;">{event.get('title', 'Christmas Carols')}</h2>
         <p style="text-align: center; font-size: 0.85rem; margin: 0 0 0.3rem 0; color: #333 !important;">{event.get('description', '')}</p>
         <div style="display: flex; justify-content: space-around; flex-wrap: wrap; font-size: 0.8rem;">
             <span><b>Date:</b> {date_disp}</span>
