@@ -73,7 +73,7 @@ def format_time(time_str):
 def apply_theme():
     st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Crimson+Pro:wght@400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Crimson+Pro:wght@400;600&family=Playfair+Display:wght@600;700&display=swap');
     
     #MainMenu, footer, header {visibility: hidden;}
     
@@ -100,13 +100,14 @@ def apply_theme():
         100% { background-position: 150px 300px; }
     }
     
-    /* NO TOP PADDING */
+    /* ZERO TOP PADDING - content at very top */
     .main .block-container {
         background: rgba(255, 253, 250, 0.98);
         border-radius: 12px;
-        padding: 0.4rem 0.5rem !important;
-        padding-top: 0.2rem !important;
-        margin: 0.1rem auto !important;
+        padding: 0.3rem 0.5rem !important;
+        padding-top: 0 !important;
+        margin: 0 auto !important;
+        margin-top: 0 !important;
         max-width: 100%;
         box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         border: 2px solid #c41e3a;
@@ -114,9 +115,14 @@ def apply_theme():
         z-index: 1;
     }
     
+    /* Remove default streamlit top padding */
+    .main > div { padding-top: 0 !important; }
+    .block-container { padding-top: 0 !important; }
+    
     @media (min-width: 768px) {
         .main .block-container {
-            padding: 0.8rem 1rem !important;
+            padding: 0.6rem 1rem !important;
+            padding-top: 0.2rem !important;
             max-width: 600px;
         }
     }
@@ -125,9 +131,11 @@ def apply_theme():
         font-family: 'Mountains of Christmas', cursive !important;
         color: #c41e3a !important;
         text-align: center;
-        font-size: 1.3rem !important;
+        font-size: 1.4rem !important;
         margin: 0 !important;
+        margin-top: 0 !important;
         padding: 0 !important;
+        padding-top: 0.2rem !important;
         line-height: 1.1 !important;
     }
     
@@ -257,7 +265,7 @@ def render_guest_view(data):
     
     st.markdown(f"""
     <div class="event-card">
-        <h2 style="text-align: center; margin: 0 0 0.3rem 0; font-size: 1.1rem; font-family: 'Mountains of Christmas', cursive; color: #c41e3a !important; font-weight: 700;">{event.get('title', 'Christmas Carols')}</h2>
+        <h2 style="text-align: center; margin: 0 0 0.3rem 0; font-size: 1.05rem; font-family: 'Playfair Display', Georgia, serif; color: #8B0000 !important; font-weight: 700; letter-spacing: 0.5px; line-height: 1.3;">{event.get('title', 'Christmas Carols')}</h2>
         <p style="text-align: center; font-size: 0.85rem; margin: 0 0 0.3rem 0; color: #333 !important;">{event.get('description', '')}</p>
         <div style="display: flex; justify-content: space-around; flex-wrap: wrap; font-size: 0.8rem;">
             <span><b>Date:</b> {date_disp}</span>
