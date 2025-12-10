@@ -257,8 +257,8 @@ def render_guest_view(data):
     
     st.markdown(f"""
     <div class="event-card">
-        <h2 style="text-align: center; margin: 0 0 0.2rem 0; font-size: 1rem;">{event.get('title', 'Christmas Carols')}</h2>
-        <p style="text-align: center; font-size: 0.85rem; margin: 0 0 0.3rem 0;">{event.get('description', '')}</p>
+        <h2 style="text-align: center; margin: 0 0 0.3rem 0; font-size: 1.1rem; font-family: 'Mountains of Christmas', cursive; color: #c41e3a !important; font-weight: 700;">{event.get('title', 'Christmas Carols')}</h2>
+        <p style="text-align: center; font-size: 0.85rem; margin: 0 0 0.3rem 0; color: #333 !important;">{event.get('description', '')}</p>
         <div style="display: flex; justify-content: space-around; flex-wrap: wrap; font-size: 0.8rem;">
             <span><b>Date:</b> {date_disp}</span>
             <span><b>Time:</b> {time_disp}</span>
@@ -276,7 +276,7 @@ def render_guest_view(data):
         </div>
         """, unsafe_allow_html=True)
     
-    st.markdown('<h4 style="color:#1a472a; margin: 0.3rem 0 0.2rem 0;">RSVP Here</h4>', unsafe_allow_html=True)
+    st.markdown('<div style="background:#1a472a; color:white; padding:0.4rem; border-radius:8px; text-align:center; margin:0.3rem 0;"><b style="color:white !important; font-size:1rem;">RSVP Here</b></div>', unsafe_allow_html=True)
     
     with st.form("rsvp_form", clear_on_submit=True):
         name = st.text_input("Your Name", placeholder="Enter your name")
