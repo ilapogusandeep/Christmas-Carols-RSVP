@@ -1,18 +1,17 @@
 """
-🎄 Christmas Carols RSVP App 🎄
+Christmas Carols RSVP App
 A festive invitation system for holiday gatherings
 """
 
 import streamlit as st
 import json
-import os
 from datetime import datetime, date, time
 from pathlib import Path
 import socket
 
 # Configuration
 DATA_FILE = Path(__file__).parent / "data" / "rsvps.json"
-HOST_PASSWORD = "IccCarols2025"  # Host password
+HOST_PASSWORD = "IccCarols2025"
 
 # Ensure data directory exists
 DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -21,17 +20,16 @@ DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
 if not DATA_FILE.exists():
     with open(DATA_FILE, "w") as f:
         json.dump({"responses": [], "event_details": {
-            "title": "Indian Community Church, Santa Clara - Carols 🎄",
+            "title": "Indian Community Church, Santa Clara - Carols",
             "date": "2024-12-24",
             "time": "18:00",
             "location": "Indian Community Church, Santa Clara",
-            "description": "Join us for an evening of joy, music, and Christmas carols! 🎵",
-            "host_instructions": "🚗 Parking available in the church parking lot.\n🎁 Feel free to bring a dish to share!\n👗 Dress code: Festive casual"
+            "description": "Join us for an evening of joy, music, and Christmas carols!",
+            "host_instructions": "Parking available in the church parking lot.\nFeel free to bring a dish to share!\nDress code: Festive casual"
         }}, f, indent=2)
 
 
 def load_data():
-    """Load RSVP data from file"""
     try:
         with open(DATA_FILE, "r") as f:
             data = json.load(f)
@@ -43,18 +41,15 @@ def load_data():
 
 
 def save_data(data):
-    """Save RSVP data to file"""
     with open(DATA_FILE, "w") as f:
         json.dump(data, f, indent=2)
 
 
 def get_total_attendees(responses):
-    """Calculate total number of attendees"""
     return sum(r.get("num_guests", 0) for r in responses)
 
 
 def get_app_url():
-    """Get the URL for sharing the app"""
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
@@ -62,41 +57,30 @@ def get_app_url():
         s.close()
     except:
         local_ip = "localhost"
-    
-    return {
-        "local": "http://localhost:8501",
-        "network": f"http://{local_ip}:8501"
-    }
+    return {"local": "http://localhost:8501", "network": f"http://{local_ip}:8501"}
 
 
 def format_date_display(date_str):
-    """Format date string for display"""
     try:
-        d = datetime.strptime(date_str, "%Y-%m-%d")
-        return d.strftime("%b %d, %Y")
+        return datetime.strptime(date_str, "%Y-%m-%d").strftime("%b %d, %Y")
     except:
         return date_str
 
 
 def format_time_display(time_str):
-    """Format time string for display"""
     try:
-        t = datetime.strptime(time_str, "%H:%M")
-        return t.strftime("%I:%M %p")
+        return datetime.strptime(time_str, "%H:%M").strftime("%I:%M %p")
     except:
         return time_str
 
 
 def apply_christmas_theme():
-    """Apply festive Christmas styling - COMPACT MOBILE VIEW"""
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Crimson+Pro:wght@400;600&display=swap');
     
-    /* Hide Streamlit branding for cleaner look */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
+    /* Hide Streamlit branding */
+    #MainMenu, footer, header {visibility: hidden;}
     
     /* Main background */
     .stApp {
@@ -104,35 +88,34 @@ def apply_christmas_theme():
         background-attachment: fixed;
     }
     
-    /* Snowfall animation */
+    /* Snow effect */
     .stApp::before {
         content: "";
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
         pointer-events: none;
         background-image: 
             radial-gradient(2px 2px at 20px 30px, white, transparent),
             radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
             radial-gradient(1px 1px at 90px 40px, white, transparent);
         background-size: 200px 200px;
-        animation: snowfall 10s linear infinite;
+        animation: snow 10s linear infinite;
         z-index: 0;
     }
     
-    @keyframes snowfall {
+    @keyframes snow {
         0% { background-position: 0 0; }
         100% { background-position: 200px 400px; }
     }
     
-    /* COMPACT Main container for mobile */
+    /* Main container - ULTRA COMPACT */
     .main .block-container {
-        background: rgba(255, 250, 245, 0.98);
-        border-radius: 15px;
-        padding: 0.8rem 0.8rem !important;
-        margin: 0.3rem auto !important;
+        background: rgba(255, 252, 248, 0.99);
+        border-radius: 12px;
+        padding: 0.5rem 0.6rem !important;
+        padding-top: 0.3rem !important;
+        margin: 0.2rem auto !important;
         max-width: 100%;
         box-shadow: 0 8px 30px rgba(0,0,0,0.3);
         border: 2px solid #c41e3a;
@@ -142,59 +125,71 @@ def apply_christmas_theme():
     
     @media (min-width: 768px) {
         .main .block-container {
-            padding: 1.5rem 2rem !important;
-            margin: 1rem auto !important;
-            max-width: 700px;
-            border-radius: 20px;
+            padding: 1rem 1.5rem !important;
+            margin: 0.5rem auto !important;
+            max-width: 650px;
         }
     }
     
-    /* COMPACT Header */
+    /* Title - NO TOP MARGIN */
     h1 {
         font-family: 'Mountains of Christmas', cursive !important;
         color: #c41e3a !important;
         text-align: center;
-        font-size: 1.4rem !important;
-        margin: 0 0 0.3rem 0 !important;
-        padding: 0 !important;
-        line-height: 1.2 !important;
-    }
-    
-    @media (min-width: 768px) {
-        h1 {
-            font-size: 2.2rem !important;
-            margin-bottom: 0.5rem !important;
-        }
-    }
-    
-    h2 {
-        font-family: 'Mountains of Christmas', cursive !important;
-        color: #1a472a !important;
-        font-size: 1.1rem !important;
+        font-size: 1.3rem !important;
         margin: 0 !important;
-    }
-    
-    h3 {
-        font-family: 'Mountains of Christmas', cursive !important;
-        color: #1a472a !important;
-        font-size: 1rem !important;
-        margin: 0.3rem 0 !important;
+        padding: 0 !important;
+        line-height: 1.1 !important;
     }
     
     @media (min-width: 768px) {
-        h2 { font-size: 1.5rem !important; }
-        h3 { font-size: 1.2rem !important; }
+        h1 { font-size: 2rem !important; }
     }
     
-    /* ALL TEXT - DARK & VISIBLE */
-    p, li, label, .stMarkdown, span, div, strong, em {
+    h2, h3, h4 {
+        font-family: 'Mountains of Christmas', cursive !important;
+        color: #1a472a !important;
+        margin: 0.2rem 0 !important;
+    }
+    
+    h2 { font-size: 1rem !important; }
+    h3 { font-size: 0.95rem !important; }
+    h4 { font-size: 0.9rem !important; }
+    
+    /* ALL TEXT - DARK */
+    p, li, label, span, div, strong, em, .stMarkdown {
         font-family: 'Crimson Pro', serif !important;
         color: #1a1a1a !important;
     }
     
-    /* Force dark text everywhere in main area */
-    .main p, .main span, .main label, .main div, .main strong {
-        color: #1a1a1a !important;
+    /* Mode toggle buttons */
+    .mode-toggle {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .mode-btn {
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-family: 'Mountains of Christmas', cursive;
+        font-size: 0.9rem;
+        font-weight: bold;
+        cursor: pointer;
+        border: 2px solid #1a472a;
+        transition: all 0.2s;
+    }
+    
+    .mode-btn-active {
+        background: #c41e3a;
+        color: white !important;
+        border-color: #c41e3a;
+    }
+    
+    .mode-btn-inactive {
+        background: white;
+        color: #1a472a !important;
     }
     
     /* Input fields */
@@ -206,235 +201,165 @@ def apply_christmas_theme():
         font-size: 16px !important;
         color: #1a1a1a !important;
         background-color: #ffffff !important;
-        padding: 0.5rem !important;
+        padding: 0.4rem !important;
     }
     
-    /* Labels */
-    .stTextInput label, .stNumberInput label, .stTextArea label {
+    /* Labels - DARK */
+    .stTextInput label, .stNumberInput label, .stTextArea label,
+    .stSelectbox label, .stRadio label {
         color: #1a1a1a !important;
         font-weight: 600 !important;
-        font-size: 0.9rem !important;
+        font-size: 0.85rem !important;
     }
     
-    /* COMPACT Button */
+    /* Radio buttons on main page - VISIBLE */
+    .stRadio > div {
+        background: #fff8f0;
+        padding: 0.3rem 0.5rem;
+        border-radius: 8px;
+        border: 1px solid #d4af37;
+    }
+    
+    .stRadio label span {
+        color: #1a1a1a !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Button */
     .stButton > button {
         background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%) !important;
         color: white !important;
         border: none !important;
         border-radius: 20px !important;
-        padding: 0.6rem 1.2rem !important;
+        padding: 0.5rem 1rem !important;
         font-family: 'Mountains of Christmas', cursive !important;
-        font-size: 1rem !important;
+        font-size: 0.95rem !important;
         font-weight: 700 !important;
-        min-height: 44px !important;
+        min-height: 42px !important;
         width: 100%;
     }
     
-    @media (min-width: 768px) {
-        .stButton > button {
-            font-size: 1.2rem !important;
-            padding: 0.75rem 2rem !important;
-        }
-    }
-    
-    /* Success/Error messages */
-    .stSuccess p, .stError p, .stInfo p, .stWarning p {
-        color: inherit !important;
-    }
-    
-    /* COMPACT Event card */
+    /* Event card - COMPACT */
     .event-card {
-        background: linear-gradient(135deg, #fffaf5 0%, #fff5eb 100%);
+        background: linear-gradient(135deg, #fffbf5 0%, #fff8ee 100%);
         border: 2px solid #d4af37;
-        border-radius: 12px;
-        padding: 0.6rem;
-        margin: 0.4rem 0;
-    }
-    
-    @media (min-width: 768px) {
-        .event-card {
-            padding: 1rem;
-            margin: 0.8rem 0;
-        }
+        border-radius: 10px;
+        padding: 0.5rem;
+        margin: 0.3rem 0;
     }
     
     .event-card h2, .event-card p, .event-card strong, .event-card div {
         color: #1a1a1a !important;
     }
     
-    /* COMPACT Instructions card */
+    /* Instructions card */
     .instructions-card {
-        background: linear-gradient(135deg, #f5faff 0%, #eaf4ff 100%);
-        border: 2px solid #1a472a;
-        border-radius: 10px;
-        padding: 0.5rem;
-        margin: 0.4rem 0;
-    }
-    
-    @media (min-width: 768px) {
-        .instructions-card {
-            padding: 1rem;
-        }
+        background: #f8fcff;
+        border: 1px solid #1a472a;
+        border-radius: 8px;
+        padding: 0.4rem;
+        margin: 0.3rem 0;
     }
     
     .instructions-card h3, .instructions-card p, .instructions-card div {
         color: #1a1a1a !important;
     }
     
-    /* COMPACT Stats cards */
+    /* Stats cards */
     .stats-card {
         background: linear-gradient(135deg, #1a472a 0%, #2d5016 100%);
-        border-radius: 10px;
-        padding: 0.5rem;
+        border-radius: 8px;
+        padding: 0.4rem;
         margin: 0.2rem 0;
         text-align: center;
     }
     
     .stats-card h3 {
         color: #ffd700 !important;
-        font-size: 0.75rem !important;
+        font-size: 0.7rem !important;
         margin: 0 !important;
     }
     
     .stats-card p {
         color: white !important;
-        font-size: 1.3rem !important;
+        font-size: 1.2rem !important;
         font-weight: bold !important;
-        margin: 0.2rem 0 0 0 !important;
+        margin: 0.1rem 0 0 0 !important;
     }
     
-    @media (min-width: 768px) {
-        .stats-card {
-            padding: 1rem;
-        }
-        .stats-card h3 { font-size: 1rem !important; }
-        .stats-card p { font-size: 1.8rem !important; }
-    }
+    /* Compact spacing */
+    hr { margin: 0.3rem 0 !important; }
+    .element-container { margin-bottom: 0.2rem !important; }
+    [data-testid="stFormSubmitButton"] { margin-top: 0.2rem !important; }
     
-    /* Compact ornament */
-    .ornament {
-        font-size: 1.2rem;
-        text-align: center;
-        margin: 0.2rem 0;
-        line-height: 1;
-    }
-    
-    @media (min-width: 768px) {
-        .ornament {
-            font-size: 1.8rem;
-            margin: 0.5rem 0;
-        }
-    }
-    
-    /* Sidebar */
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #1a472a 0%, #0d2818 100%);
-    }
-    
-    [data-testid="stSidebar"] p,
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] span,
-    [data-testid="stSidebar"] .stMarkdown {
-        color: #ffd700 !important;
-    }
-    
-    /* Horizontal rule - compact */
-    hr {
-        margin: 0.4rem 0 !important;
-    }
-    
-    /* Reduce spacing between elements */
-    .stMarkdown {
-        margin-bottom: 0 !important;
-    }
-    
-    .element-container {
-        margin-bottom: 0.3rem !important;
-    }
-    
-    /* Expander styling */
+    /* Expander */
     .streamlit-expanderHeader {
         color: #1a472a !important;
         background-color: #fff8f0 !important;
+        font-size: 0.9rem !important;
     }
     
-    .streamlit-expanderContent p,
-    .streamlit-expanderContent div,
-    .streamlit-expanderContent span {
+    .streamlit-expanderContent p, .streamlit-expanderContent div, .streamlit-expanderContent span {
         color: #1a1a1a !important;
     }
     
-    /* Code blocks */
-    .stCode code {
-        color: #1a1a1a !important;
-        background-color: #fffacd !important;
-    }
-    
-    /* Date/Time inputs */
-    .stDateInput input, .stTimeInput input {
-        color: #1a1a1a !important;
+    /* Password input in main area */
+    .stTextInput input[type="password"] {
         background-color: #ffffff !important;
-        font-size: 16px !important;
+        color: #1a1a1a !important;
     }
     
-    /* Form submit button container - reduce spacing */
-    [data-testid="stFormSubmitButton"] {
-        margin-top: 0.3rem !important;
-    }
-    
-    /* Mobile column stacking */
+    /* Mobile columns */
     @media (max-width: 767px) {
         [data-testid="column"] {
             width: 100% !important;
             flex: 1 1 100% !important;
         }
     }
+    
+    /* Success/Error */
+    .stSuccess, .stError, .stInfo, .stWarning {
+        padding: 0.4rem !important;
+        font-size: 0.85rem !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
 
 def render_guest_view(data):
-    """Render the COMPACT guest RSVP form"""
+    """Render COMPACT guest RSVP form"""
     event = data.get("event_details", {})
     
-    # Compact header
-    st.markdown('<div class="ornament">🎄 ⭐ 🎄</div>', unsafe_allow_html=True)
+    # Title - NO EXTRA SPACE
     st.title("You're Invited!")
     
-    # Format date and time
     date_display = format_date_display(event.get('date', 'TBD'))
     time_display = format_time_display(event.get('time', 'TBD'))
     
-    # COMPACT Event details card
+    # Event card
     st.markdown(f"""
     <div class="event-card">
-        <h2 style="text-align: center; margin: 0 0 0.3rem 0; font-size: 1.1rem;">{event.get('title', 'Christmas Carols')}</h2>
-        <p style="text-align: center; font-size: 0.95rem; margin: 0 0 0.5rem 0; color: #333 !important;">{event.get('description', '')}</p>
-        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 0.3rem; font-size: 0.9rem;">
-            <div style="text-align: center;">
-                <strong style="color: #1a472a !important;">📅</strong> {date_display}
-            </div>
-            <div style="text-align: center;">
-                <strong style="color: #1a472a !important;">🕐</strong> {time_display}
-            </div>
-            <div style="text-align: center;">
-                <strong style="color: #1a472a !important;">📍</strong> {event.get('location', 'TBD')}
-            </div>
+        <h2 style="text-align: center; margin: 0 0 0.2rem 0;">{event.get('title', 'Christmas Carols')}</h2>
+        <p style="text-align: center; font-size: 0.9rem; margin: 0 0 0.3rem 0;">{event.get('description', '')}</p>
+        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; font-size: 0.85rem;">
+            <span><strong>📅</strong> {date_display}</span>
+            <span><strong>🕐</strong> {time_display}</span>
+            <span><strong>📍</strong> {event.get('location', 'TBD')}</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Host Instructions (compact)
+    # Host Instructions
     host_instructions = event.get('host_instructions', '').strip()
     if host_instructions:
         st.markdown(f"""
         <div class="instructions-card">
-            <h3 style="margin: 0 0 0.3rem 0; font-size: 0.95rem;">📋 Info from Host</h3>
-            <div style="white-space: pre-line; font-size: 0.85rem; color: #1a1a1a !important;">{host_instructions}</div>
+            <h3 style="margin: 0 0 0.2rem 0; font-size: 0.85rem;">📋 Info from Host</h3>
+            <div style="white-space: pre-line; font-size: 0.8rem;">{host_instructions}</div>
         </div>
         """, unsafe_allow_html=True)
     
-    # COMPACT RSVP Form
+    # RSVP Form
     st.markdown("#### 📝 RSVP")
     
     with st.form("rsvp_form", clear_on_submit=True):
@@ -448,7 +373,6 @@ def render_guest_view(data):
                 st.error("Please enter your name!")
             else:
                 existing = [r for r in data["responses"] if r["name"].lower() == name.strip().lower()]
-                
                 new_response = {
                     "name": name.strip(),
                     "num_guests": num_guests,
@@ -462,135 +386,108 @@ def render_guest_view(data):
                             data["responses"][i] = new_response
                             break
                     save_data(data)
-                    st.success(f"✨ Thanks {name}! RSVP updated. See you there! 🎉")
+                    st.success(f"Thanks {name}! RSVP updated!")
                 else:
                     data["responses"].append(new_response)
                     save_data(data)
-                    st.success(f"✨ Thanks {name}! See you there! 🎉")
-                
+                    st.success(f"Thanks {name}! See you there!")
                 st.balloons()
-    
-    # Minimal footer
-    st.markdown('<p style="text-align: center; font-size: 0.8rem; color: #555 !important; margin-top: 0.5rem;">🎵 Spread Christmas cheer! 🎵</p>', unsafe_allow_html=True)
 
 
 def render_host_view(data):
-    """Render the host dashboard"""
-    st.title("🎅 Host Dashboard")
+    """Render host dashboard"""
+    st.title("Host Dashboard")
     
-    # Share URL Section
+    # Check authentication
+    if not st.session_state.get("host_authenticated", False):
+        st.markdown("#### 🔐 Enter Password")
+        password = st.text_input("Password", type="password", key="host_pwd")
+        if st.button("Login"):
+            if password == HOST_PASSWORD:
+                st.session_state["host_authenticated"] = True
+                st.rerun()
+            else:
+                st.error("Wrong password!")
+        return
+    
+    # Share URLs
     urls = get_app_url()
-    with st.expander("🔗 Share URLs", expanded=False):
-        st.code(urls["local"], language=None)
-        st.code(urls["network"], language=None)
-        st.info("💡 Deploy to Streamlit Cloud for public URL!")
+    with st.expander("🔗 Share URLs"):
+        st.code(urls["local"])
+        st.code(urls["network"])
     
     responses = data.get("responses", [])
     total_attendees = get_total_attendees(responses)
     
-    # Stats cards
+    # Stats
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown(f"""
-        <div class="stats-card">
-            <h3>Responses</h3>
-            <p>{len(responses)}</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
+        st.markdown(f'<div class="stats-card"><h3>Responses</h3><p>{len(responses)}</p></div>', unsafe_allow_html=True)
     with col2:
-        st.markdown(f"""
-        <div class="stats-card">
-            <h3>Total Guests</h3>
-            <p>{total_attendees}</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f'<div class="stats-card"><h3>Total Guests</h3><p>{total_attendees}</p></div>', unsafe_allow_html=True)
     
     st.markdown("---")
     
-    # Guest List
     if responses:
         st.markdown("### 📋 Guest List")
         for i, r in enumerate(sorted(responses, key=lambda x: x.get("timestamp", ""), reverse=True)):
-            with st.expander(f"**{r['name']}** - {r['num_guests']} guest(s)"):
-                st.write(f"**RSVP:** {r.get('timestamp', 'N/A')}")
-                if st.button(f"❌ Remove", key=f"delete_{i}"):
-                    data["responses"] = [resp for resp in data["responses"] if resp["name"] != r["name"]]
+            with st.expander(f"{r['name']} - {r['num_guests']} guest(s)"):
+                st.write(f"RSVP: {r.get('timestamp', 'N/A')}")
+                if st.button("Remove", key=f"del_{i}"):
+                    data["responses"] = [x for x in data["responses"] if x["name"] != r["name"]]
                     save_data(data)
                     st.rerun()
         
-        # Summary table
         import pandas as pd
-        df = pd.DataFrame([{
-            "Name": r["name"],
-            "Guests": r["num_guests"],
-            "RSVP Date": r.get("timestamp", "N/A")[:10]
-        } for r in responses])
+        df = pd.DataFrame([{"Name": r["name"], "Guests": r["num_guests"], "Date": r.get("timestamp", "")[:10]} for r in responses])
         st.dataframe(df, use_container_width=True, hide_index=True)
-        
-        st.download_button(
-            label="📥 Download CSV",
-            data=df.to_csv(index=False),
-            file_name=f"carols_rsvps_{datetime.now().strftime('%Y%m%d')}.csv",
-            mime="text/csv"
-        )
+        st.download_button("📥 Download CSV", df.to_csv(index=False), f"rsvps_{datetime.now().strftime('%Y%m%d')}.csv")
     else:
-        st.info("No RSVPs yet. Share your event link!")
+        st.info("No RSVPs yet!")
     
     st.markdown("---")
     
-    # Event Settings
-    with st.expander("⚙️ Edit Event Details"):
+    with st.expander("⚙️ Edit Event"):
         event = data.get("event_details", {})
-        
-        with st.form("event_settings"):
-            new_title = st.text_input("Title", value=event.get("title", ""))
-            
+        with st.form("settings"):
+            title = st.text_input("Title", event.get("title", ""))
             col1, col2 = st.columns(2)
             with col1:
                 try:
-                    default_date = datetime.strptime(event.get("date", "2024-12-24"), "%Y-%m-%d").date()
+                    d = datetime.strptime(event.get("date", "2024-12-24"), "%Y-%m-%d").date()
                 except:
-                    default_date = date(2024, 12, 24)
-                new_date = st.date_input("Date", value=default_date)
-            
+                    d = date(2024, 12, 24)
+                new_date = st.date_input("Date", d)
             with col2:
                 try:
-                    time_parts = event.get("time", "18:00").split(":")
-                    default_time = time(int(time_parts[0]), int(time_parts[1]))
+                    t = event.get("time", "18:00").split(":")
+                    new_time = st.time_input("Time", time(int(t[0]), int(t[1])))
                 except:
-                    default_time = time(18, 0)
-                new_time = st.time_input("Time", value=default_time)
+                    new_time = st.time_input("Time", time(18, 0))
+            loc = st.text_input("Location", event.get("location", ""))
+            desc = st.text_area("Description", event.get("description", ""), height=50)
+            instr = st.text_area("Host Instructions", event.get("host_instructions", ""), height=80)
             
-            new_location = st.text_input("Location", value=event.get("location", ""))
-            new_description = st.text_area("Description", value=event.get("description", ""), height=60)
-            new_instructions = st.text_area("Host Instructions (parking, etc.)", value=event.get("host_instructions", ""), height=100)
-            
-            if st.form_submit_button("💾 Save"):
+            if st.form_submit_button("Save"):
                 data["event_details"] = {
-                    "title": new_title,
-                    "date": new_date.strftime("%Y-%m-%d"),
-                    "time": new_time.strftime("%H:%M"),
-                    "location": new_location,
-                    "description": new_description,
-                    "host_instructions": new_instructions
+                    "title": title, "date": new_date.strftime("%Y-%m-%d"),
+                    "time": new_time.strftime("%H:%M"), "location": loc,
+                    "description": desc, "host_instructions": instr
                 }
                 save_data(data)
                 st.success("Saved!")
                 st.rerun()
     
-    with st.expander("🗑️ Danger Zone"):
-        if st.button("Clear All RSVPs"):
+    with st.expander("🗑️ Clear All"):
+        if st.button("Clear RSVPs"):
             data["responses"] = []
             save_data(data)
-            st.success("Cleared!")
             st.rerun()
 
 
 def main():
-    """Main application entry point"""
     st.set_page_config(
-        page_title="ICC Santa Clara - Carols RSVP 🎄",
+        page_title="ICC Carols RSVP",
         page_icon="🎄",
         layout="centered",
         initial_sidebar_state="collapsed"
@@ -599,28 +496,16 @@ def main():
     apply_christmas_theme()
     data = load_data()
     
-    with st.sidebar:
-        st.markdown("## 🎄 Menu")
-        view = st.radio("", ["🎁 Guest RSVP", "🎅 Host"], label_visibility="collapsed")
-        
-        if view == "🎅 Host":
-            st.markdown("---")
-            password = st.text_input("Password", type="password")
-            if password:
-                if password == HOST_PASSWORD:
-                    st.success("✅ Access granted!")
-                    st.session_state["host_authenticated"] = True
-                else:
-                    st.error("❌ Wrong password")
-                    st.session_state["host_authenticated"] = False
+    # MODE TOGGLE ON MAIN PAGE - VISIBLE!
+    st.markdown("##### Select Mode:")
+    mode = st.radio("", ["🎁 Guest RSVP", "🔐 Host Login"], horizontal=True, label_visibility="collapsed")
     
-    if view == "🎁 Guest RSVP":
+    st.markdown("---")
+    
+    if mode == "🎁 Guest RSVP":
         render_guest_view(data)
     else:
-        if st.session_state.get("host_authenticated", False):
-            render_host_view(data)
-        else:
-            st.warning("🔐 Enter host password in sidebar")
+        render_host_view(data)
 
 
 if __name__ == "__main__":
