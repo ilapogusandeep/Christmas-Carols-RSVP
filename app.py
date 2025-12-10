@@ -17,7 +17,7 @@ if not DATA_FILE.exists():
     with open(DATA_FILE, "w") as f:
         json.dump({"responses": [], "event_details": {
             "title": "Indian Community Church, Santa Clara - Carols",
-            "date": "2024-12-24",
+            "date": datetime.now().strftime("%Y-%m-%d"),
             "time": "18:00",
             "location": "Indian Community Church, Santa Clara",
             "description": "Join us in the Christmas Caroling to share the joy of Christmas with our brothers and sisters families!",
@@ -100,7 +100,7 @@ def apply_theme():
         100% { background-position: 150px 300px; }
     }
     
-    /* ZERO TOP PADDING - content at very top */
+    /* ZERO TOP PADDING */
     .main .block-container {
         background: rgba(255, 253, 250, 0.98);
         border-radius: 12px;
@@ -115,7 +115,6 @@ def apply_theme():
         z-index: 1;
     }
     
-    /* Remove default streamlit top padding */
     .main > div { padding-top: 0 !important; }
     .block-container { padding-top: 0 !important; }
     
@@ -151,13 +150,11 @@ def apply_theme():
         color: #222222 !important;
     }
     
-    /* Force all labels dark */
     label, .stTextInput label, .stNumberInput label, .stTextArea label {
         color: #222222 !important;
         font-weight: 600 !important;
     }
     
-    /* Input fields */
     input, textarea {
         border: 2px solid #1a472a !important;
         border-radius: 8px !important;
@@ -166,7 +163,6 @@ def apply_theme():
         background: #ffffff !important;
     }
     
-    /* Radio - bottom toggle */
     .stRadio > div {
         background: #1a472a;
         padding: 0.3rem 0.5rem;
@@ -179,7 +175,6 @@ def apply_theme():
         font-weight: 600 !important;
     }
     
-    /* Button */
     .stButton > button {
         background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%) !important;
         color: white !important;
@@ -192,7 +187,6 @@ def apply_theme():
         min-height: 44px !important;
     }
     
-    /* Event card */
     .event-card {
         background: linear-gradient(135deg, #fffbf5 0%, #fff8ee 100%);
         border: 2px solid #d4af37;
@@ -203,7 +197,6 @@ def apply_theme():
     
     .event-card * { color: #222222 !important; }
     
-    /* Info card */
     .info-card {
         background: #f5f9ff;
         border: 1px solid #1a472a;
@@ -214,7 +207,6 @@ def apply_theme():
     
     .info-card * { color: #222222 !important; }
     
-    /* Stats */
     .stats-card {
         background: linear-gradient(135deg, #1a472a 0%, #2d5016 100%);
         border-radius: 8px;
@@ -226,18 +218,29 @@ def apply_theme():
     .stats-card h4 { color: #ffd700 !important; font-size: 0.75rem !important; margin: 0 !important; }
     .stats-card p { color: white !important; font-size: 1.2rem !important; font-weight: bold !important; margin: 0 !important; }
     
-    /* Guest row */
     .guest-row {
         background: #f9f9f9;
         border: 1px solid #ddd;
         border-radius: 6px;
-        padding: 0.3rem;
+        padding: 0.4rem 0.5rem;
         margin: 0.2rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
     
     .guest-row * { color: #222222 !important; }
     
-    /* Bottom toggle */
+    .delete-btn {
+        background: #dc3545;
+        color: white !important;
+        border: none;
+        border-radius: 4px;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.75rem;
+        cursor: pointer;
+    }
+    
     .bottom-toggle {
         background: #1a472a;
         border-radius: 8px;
@@ -266,12 +269,12 @@ def render_guest_view(data):
     st.markdown(f"""
     <div class="event-card">
         <h2 style="text-align: center; margin: 0 0 0.3rem 0; font-size: 1.15rem; font-family: 'EB Garamond', Georgia, serif; color: #1a472a !important; font-weight: 600; letter-spacing: 0.2px; line-height: 1.25;">{event.get('title', 'Christmas Carols')}</h2>
-        <p style="text-align: center; font-size: 0.85rem; margin: 0 0 0.3rem 0; color: #333 !important;">{event.get('description', '')}</p>
-        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; font-size: 0.8rem;">
-            <span><b>Date:</b> {date_disp}</span>
-            <span><b>Time:</b> {time_disp}</span>
+        <p style="text-align: center; font-size: 0.85rem; margin: 0 0 0.4rem 0; color: #333 !important;">{event.get('description', '')}</p>
+        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; font-size: 1rem; margin: 0.3rem 0;">
+            <span style="font-weight: bold; color: #c41e3a !important;">Date: {date_disp}</span>
+            <span style="font-weight: bold; color: #c41e3a !important;">Time: {time_disp}</span>
         </div>
-        <p style="text-align: center; font-size: 0.8rem; margin: 0.2rem 0 0 0;"><b>Place:</b> {event.get('location', 'TBD')}</p>
+        <p style="text-align: center; font-size: 0.9rem; margin: 0.3rem 0 0 0; font-weight: bold;">Place: {event.get('location', 'TBD')}</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -339,10 +342,21 @@ def render_host_view(data):
     
     st.markdown("---")
     
+    # Guest List with DELETE option
     if responses:
         st.markdown('<h4 style="color:#1a472a;">Guest List</h4>', unsafe_allow_html=True)
-        for r in sorted(responses, key=lambda x: x.get("timestamp", ""), reverse=True):
-            st.markdown(f'<div class="guest-row"><b>{r["name"]}</b> - {r["num_guests"]} guest(s)</div>', unsafe_allow_html=True)
+        
+        for i, r in enumerate(sorted(responses, key=lambda x: x.get("timestamp", ""), reverse=True)):
+            col1, col2 = st.columns([4, 1])
+            with col1:
+                st.markdown(f'<div style="padding:0.3rem;"><b>{r["name"]}</b> - {r["num_guests"]} guest(s)</div>', unsafe_allow_html=True)
+            with col2:
+                if st.button("Delete", key=f"del_{i}_{r['name']}"):
+                    data["responses"] = [x for x in data["responses"] if x["name"] != r["name"]]
+                    save_data(data)
+                    st.rerun()
+        
+        st.markdown("---")
         
         import pandas as pd
         df = pd.DataFrame([{"Name": r["name"], "Guests": r["num_guests"]} for r in responses])
@@ -353,16 +367,18 @@ def render_host_view(data):
     
     st.markdown("---")
     
+    # Edit Event
     if st.checkbox("Edit Event"):
         event = data.get("event_details", {})
         with st.form("settings"):
             title = st.text_input("Title", event.get("title", ""))
             col1, col2 = st.columns(2)
             with col1:
+                # Default to today's date if not set or invalid
                 try:
-                    d = datetime.strptime(event.get("date", "2024-12-24"), "%Y-%m-%d").date()
+                    d = datetime.strptime(event.get("date", ""), "%Y-%m-%d").date()
                 except:
-                    d = date(2024, 12, 24)
+                    d = date.today()
                 new_date = st.date_input("Date", d)
             with col2:
                 try:
@@ -384,12 +400,32 @@ def render_host_view(data):
                 st.success("Saved!")
                 st.rerun()
     
-    if st.checkbox("Danger Zone"):
-        if st.button("Clear All RSVPs"):
-            data["responses"] = []
-            save_data(data)
-            st.success("Cleared!")
-            st.rerun()
+    # Clear All RSVPs / Start Fresh
+    if st.checkbox("Manage RSVPs"):
+        st.warning("Use these options to manage RSVP data:")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Clear All RSVPs", help="Delete all RSVPs but keep event details"):
+                data["responses"] = []
+                save_data(data)
+                st.success("All RSVPs cleared!")
+                st.rerun()
+        
+        with col2:
+            if st.button("Start Fresh Event", help="Clear RSVPs and reset event to defaults"):
+                data["responses"] = []
+                data["event_details"] = {
+                    "title": "Indian Community Church, Santa Clara - Carols",
+                    "date": date.today().strftime("%Y-%m-%d"),
+                    "time": "18:00",
+                    "location": "Indian Community Church, Santa Clara",
+                    "description": "Join us in the Christmas Caroling to share the joy of Christmas with our brothers and sisters families!",
+                    "host_instructions": ""
+                }
+                save_data(data)
+                st.success("Fresh event created!")
+                st.rerun()
 
 
 def main():
@@ -398,17 +434,14 @@ def main():
     apply_theme()
     data = load_data()
     
-    # Check mode from session state
     if "mode" not in st.session_state:
         st.session_state.mode = "Guest RSVP"
     
-    # Show content FIRST
     if st.session_state.mode == "Guest RSVP":
         render_guest_view(data)
     else:
         render_host_view(data)
     
-    # Toggle at BOTTOM - dark background with gold text
     st.markdown("---")
     st.markdown('<div class="bottom-toggle"><b>Switch View:</b></div>', unsafe_allow_html=True)
     mode = st.radio("", ["Guest RSVP", "Host Login"], horizontal=True, label_visibility="collapsed", 
