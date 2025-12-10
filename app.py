@@ -24,7 +24,7 @@ if not DATA_FILE.exists():
             "date": "2024-12-24",
             "time": "18:00",
             "location": "Indian Community Church, Santa Clara",
-            "description": "Join us for an evening of joy, music, and Christmas carols!",
+            "description": "Join us in the Christmas Caroling to share the joy of Christmas with our brothers and sisters families!",
             "host_instructions": "Parking available in the church parking lot.\nFeel free to bring a dish to share!\nDress code: Festive casual"
         }}, f, indent=2)
 
