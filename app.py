@@ -163,6 +163,7 @@ def apply_theme():
         background: #ffffff !important;
     }
     
+    /* Radio buttons - white text on green */
     .stRadio > div {
         background: #1a472a;
         padding: 0.3rem 0.5rem;
@@ -170,9 +171,28 @@ def apply_theme():
         border: 1px solid #d4af37;
     }
     
-    .stRadio label, .stRadio span, .stRadio p {
+    .stRadio label, .stRadio span, .stRadio p, .stRadio div {
         color: #ffffff !important;
         font-weight: 600 !important;
+    }
+    
+    /* Checkbox - white text */
+    .stCheckbox label, .stCheckbox span, .stCheckbox p {
+        color: #ffffff !important;
+        font-weight: 600 !important;
+    }
+    
+    .stCheckbox > div {
+        background: rgba(26, 71, 42, 0.8);
+        padding: 0.3rem 0.5rem;
+        border-radius: 6px;
+    }
+    
+    /* All text outside main container - white */
+    .stApp > div > div > div > div > div:not(.main) label,
+    .stApp > div > div > div > div > div:not(.main) span,
+    .stApp > div > div > div > div > div:not(.main) p {
+        color: #ffffff !important;
     }
     
     .stButton > button {
