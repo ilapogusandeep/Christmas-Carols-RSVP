@@ -307,11 +307,11 @@ def render_guest_view(data):
     <div class="event-card">
         <h2 style="text-align: center; margin: 0 0 0.4rem 0; font-size: 1.3rem; font-family: Cambria, Georgia, serif; color: #1a472a !important; font-weight: 700; line-height: 1.3;">{event.get('title', 'Christmas Carols')}</h2>
         <p style="text-align: center; font-size: 0.85rem; margin: 0 0 0.4rem 0; color: #333 !important;">{event.get('description', '')}</p>
-        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; font-size: 1rem; margin: 0.3rem 0;">
+        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; font-size: 1.15rem; margin: 0.4rem 0;">
             <span style="font-weight: bold; color: #c41e3a !important;">Date: {date_disp}</span>
             <span style="font-weight: bold; color: #c41e3a !important;">Time: {time_disp}</span>
         </div>
-        <p style="text-align: center; font-size: 0.9rem; margin: 0.3rem 0 0 0; font-weight: bold;">Place: {event.get('location', 'TBD')}</p>
+        <p style="text-align: center; font-size: 1.1rem; margin: 0.4rem 0 0 0; font-weight: bold; color: #1a472a !important;">Place: {event.get('location', 'TBD')}</p>
     </div>
     """, unsafe_allow_html=True)
     
