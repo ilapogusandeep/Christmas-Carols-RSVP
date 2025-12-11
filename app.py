@@ -481,7 +481,7 @@ def main():
     
     st.markdown("---")
     st.markdown('<div class="bottom-toggle"><b>Switch View:</b></div>', unsafe_allow_html=True)
-    mode = st.radio("", ["Guest RSVP", "Host Login"], horizontal=True, label_visibility="collapsed", 
+    mode = st.radio("Select Mode", ["Guest RSVP", "Host Login"], horizontal=True, label_visibility="collapsed", 
                     index=0 if st.session_state.mode == "Guest RSVP" else 1)
     
     if mode != st.session_state.mode:
