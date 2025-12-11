@@ -150,9 +150,22 @@ def apply_theme():
         color: #222222 !important;
     }
     
+    /* Form labels - dark green color */
     label, .stTextInput label, .stNumberInput label, .stTextArea label {
-        color: #222222 !important;
-        font-weight: 600 !important;
+        color: #1a472a !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+    }
+    
+    /* Form submit button - RED */
+    [data-testid="stFormSubmitButton"] button {
+        background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 20px !important;
+        font-family: 'Mountains of Christmas', cursive !important;
+        font-size: 1.1rem !important;
+        font-weight: 700 !important;
     }
     
     input, textarea {
@@ -338,7 +351,7 @@ def render_host_view(data):
     st.title("Host Dashboard")
     
     if not st.session_state.get("host_authenticated", False):
-        st.markdown('<p style="color:#222222; font-weight:bold;">Enter Password:</p>', unsafe_allow_html=True)
+        st.markdown('<p style="color:#1a472a; font-weight:bold; font-size:1.1rem;">Enter Password:</p>', unsafe_allow_html=True)
         password = st.text_input("Password", type="password", key="host_pwd", label_visibility="collapsed")
         if st.button("Login"):
             if password == HOST_PASSWORD:
