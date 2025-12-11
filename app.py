@@ -172,8 +172,12 @@ def apply_theme():
         border: 2px solid #1a472a !important;
         border-radius: 8px !important;
         font-size: 16px !important;
-        color: #222222 !important;
-        background: #ffffff !important;
+        color: #1a472a !important;
+        background: #fffef5 !important;
+    }
+    
+    input::placeholder, textarea::placeholder {
+        color: #888 !important;
     }
     
     /* Radio buttons - white text on green */
